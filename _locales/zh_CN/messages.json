@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "看人人头像",
+    "description": "Extension name"
+  },
+  "extDesc": {
+    "message": "",
+    "description": "Extension description"
+  },
+
+  "viewText": {
+    "message": "看ta的头像"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "__MSG_extName__",
+  "version": "0.0.3",
+  "description": "__MSG_extDesc__",
+  "permissions": [
+    "contextMenus"
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.renren.com/*/profile",
+        "*://www.renren.com/*/profile?*"
+      ],
+      "js": [
+        "lib/jquery.min.js",
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "default_locale": "zh_CN",
+  "icons": {
+  },
+  "manifest_version": 2
+}

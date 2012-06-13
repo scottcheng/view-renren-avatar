@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "View Renren Avatar",
+    "description": "Extension name"
+  },
+  "extDesc": {
+    "message": "",
+    "description": "Extension description"
+  },
+
+  "viewText": {
+    "message": "View his / her avatars"
+  }
+}
