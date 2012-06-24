@@ -1,6 +1,18 @@
 // View Renren Avatar by Scott Cheng
 // Content script
 
+var parseUrlParam = function(url) {
+  var queryString = url.split('?')[1];
+  var pairs = queryString.split('&');
+  var ret = {};
+  var len = pairs.length;
+  for (var i = 0; i < len; i++) {
+    var kv = pairs[i].split('=');
+    ret[kv[0]] = kv[1];
+  }
+  return ret;
+};
+
 var getAvatarUrl = function(profileUrl) {
   var id;
   if (profileUrl.indexOf('www.renren.com/profile.do') >= 0) {

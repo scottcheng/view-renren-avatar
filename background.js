@@ -16,7 +16,8 @@ var parseUrlParam = function(url) {
   var queryString = url.split('?')[1];
   var pairs = queryString.split('&');
   var ret = {};
-  for (var i in pairs) {
+  var len = pairs.length;
+  for (var i = 0; i < len; i++) {
     var kv = pairs[i].split('=');
     ret[kv[0]] = kv[1];
   }
@@ -28,12 +29,8 @@ var parseUrlParam = function(url) {
 chrome.contextMenus.create({
   title: chrome.i18n.getMessage('viewText'),
   contexts: ['link'],
-  targetUrlPatterns: [
-    '*://www.renren.com/profile.do?*',
-    '*://www.renren.com/*/profile',
-    '*://www.renren.com/*/profile?*',
-    '*://www.renren.com/g/*'
-  ],
+  documentUrlPatterns: ['*://*.renren.com/*'],
+  targetUrlPatterns: ['*://www.renren.com/*'],
   onclick: function(info, tab) {
     var avatarUrl = getAvatarUrl(info.linkUrl);
     viewAvatar(avatarUrl);
@@ -43,17 +40,25 @@ chrome.contextMenus.create({
 var getAvatarUrl = function(profileUrl) {
   var id;
   if (profileUrl.indexOf('www.renren.com/profile.do') >= 0) {
+    // www.renren.com/profile.do?id=:id
     var param = parseUrlParam(profileUrl);
     id = param.id;
   } else if (profileUrl.indexOf('www.renren.com/g/') >= 0) {
-    id = profileUrl.match(/\/g\/\d*/)[0].split('/')[2];
+    // www.renren.com/g/:id
+    id = profileUrl.match(/\/g\/\d+/)[0].split('/')[2];
   } else {
-    id = profileUrl.match(/\d*\/profile/)[0].split('/')[0];
+    // www.renren.com/:id
+    // www.renren.com/:id/profile
+    var matchRes = profileUrl.match(/www.renren.com\/\d+/);
+    matchRes && (id = matchRes[0].split('/')[1]);
   }
-  return 'http://photo.renren.com/getalbumprofile.do?owner=' + id;
+  if (id) {
+    return 'http://photo.renren.com/getalbumprofile.do?owner=' + id;
+  }
+  return 'http://photo.renren.com/';
 };
 
 var viewAvatar = function(url) {
   _gaq.push(['_trackEvent', 'ViewAvatar', 'clickMenuItem', url]);
   window.open(url);
-}
+};
